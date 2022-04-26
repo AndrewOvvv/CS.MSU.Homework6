@@ -21,6 +21,10 @@ double trigonomery(double x) {
 double zero(double x) {
 	return 0 * x; //0
 }
+
+double lin(double x) {
+	return x + 2;
+}
 //additional functions
 
 
@@ -43,7 +47,6 @@ int main(int argc, char* argv[])
 		}
 	}
 
-
 	if (phif) {
 		printf("-test - flag which swows additional test info\n");
 		printf("-pprf - flag which shows coordinates of intersection points\n");
@@ -53,15 +56,32 @@ int main(int argc, char* argv[])
 
 	if (ptif) {
 		printf("begin of test section\n");
-		function all_functions[] = {get_f1_values_fun, get_f2_values_fun, get_f3_values_fun, sqr, polynom, combine, trigonomery, zero};
+		function all_functions[] = {get_f1_values_fun, get_f2_values_fun, get_f3_values_fun, sqr, lin, polynom, combine, trigonomery, zero};
+		double integral_ans_array[] = {16.2083, 42.5, 1.2527, 41.6666, 22.5, 645.4166, 1164.2441, -0.2426};
+		double root_ans_array[] = {0.4481, -0.1528, 0.6180, 2, 0.2152, 0.5493, 0.3848};
+
 		double left = 0, right = 5;
 
-		for (int i = 0; i < cnt_functions - 1; i++) {
-			double result = integral(all_functions[i], left, right);
+		//integral test
+		for (int i = 0; i < cnt_functions; i++) {
+			double result = integral(all_functions[i], left, right, eps2);
+			assert(equal(result, integral_ans_array[i], feps));
 			printf("integral of %i function: %f\n", i + 1, result);
-			result = find_root(all_functions[i], all_functions[i + 1], left, right);
-			printf("point if intersection %i function and %i function has %f - x-coord\n\n", i + 1, i + 2, result);
 		}
+		printf("\n");
+		//integral test
+
+
+		//root test
+		left = 0.1;
+		right = 1;
+		for (int i = 0; i < cnt_functions - 2; i+=2) {
+			double result = find_root(all_functions[i], all_functions[i + 1], left, right, eps);
+			assert(equal(result, root_ans_array[i], feps));
+			printf("point if intersection %i function and %i function has %f - x-coord\n", i + 1, i + 2, result);
+		}
+		printf("\n");
+		//root test
 		printf("end of test section\n\n");
 	}
 
