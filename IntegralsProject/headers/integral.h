@@ -9,7 +9,7 @@ static const double INF = 1e9; //объявляем константу для б
 
 
 //объявление функций
-double integral(function f, double left, double right);
+double integral(function f, double left, double right, double eps2);
 
 
 #endif //INTEGRAL_H
